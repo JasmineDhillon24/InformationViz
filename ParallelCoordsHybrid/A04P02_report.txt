@@ -1,0 +1,37 @@
+A04P02 report
+
+Scatterplot with Parallel Coordinates-
+
+I have implemented a scatterplot view along with a parallel coordinates view.
+By default the scatterplot will be drawn taking the first column of the dataset on the x-axis and the second column on y-axis.
+One can drag and drop the column name labels from the parallel coordinates view to the scatterplot view to draw a scatterplot 
+for that attribute. The first label dragged and dropped will always go to x-axis and the one after that will go to y-axis and 
+so on. So, the user can use this interaction mechanism to get the desired scatterplot. I used this particular mechanism as we are
+already using drag and drop in Part 01 interacting of reordering axes. I wanted the user to have a view of picking and dropping 
+a label create a corresponding scatterplot viz of it. The scatterplot will highlight the data points in red color by hovering 
+and show a tag which gives its x and y value. Brushing a region in the scatterplot can be done by drag and drop of the rectangle 
+formed by clicking and dragging, and brushing in scatterplot will apply the same brushing on those two coloumn axes automatically
+in the parallel coordinates view. Similarly brushing in parallel coordinates will automatically apply brushing on the scatterplot view.
+The brushed data points are drawn in a natural green color to highlight them from the unbrushed points which are grey in color.
+
+1) I loaded the camera dataset into this tool and found a few interesting inferences about the dataset.
+Loading the Release date on x-axis and Max resolution/Low resolution on the y-axis forms a scatterplot where the data values increase constantly 
+till a specific value and then stops. The maximum value of y for each release date also increases steadily till maximum release data
+which is 2007. This can be explained by the advancement in technology over the years. The maximum resolution provided in a camera 
+increases with increasing advancement in tecchnolgy. A company releases multiple camera models in a year with different resolution
+capabilities to suit each price type. The same is the case of Low resolution. Now loading price on x-axis and Max resolution/Low
+resolution on y-axis shows that the price of each model increases as the maximum and minimum resolution support in that camera increases.
+This is also very obvious as a camera model with better specs will be priced higher than a camera model with lower specs.
+
+2)  I loaded the cars dataset into this tool and found a few interesting inferences about the dataset.
+I loaded horsepower on the x-axis and weight on the y-axis. This results in an increasingly linear scatterplot with data values for
+weight increasing with increasing horsepower. Now brushing the highest data values in the scatterplot, shows us the values of all atrributes
+for thise data points in the parallel coordinates. The model year for these values was mostly towards the maximum value of model year, but 
+each year the company releases a car with high horsepower and high weight. The accleration for this cars was between minimum value and maximum 
+value and the number of cylinders where maximum. These observations make sense as a car with high weight and high horsepower will have average
+accleration due to weight and high number of cylinder due to high horsepower.
+
+Using scatterplot view with parallel coordinates view was the most useful. It gives a clear picture of the data points across all attributes.
+Brushing made visualization very easy as you can select which portion of the dataset interests you the most to visualization, considering the 
+size of datasets. The implementation was fun but slightly tricky. Parallel coordinates without interaction would not have been very useful as the
+datasets are huge and so is the number of lines in the dataset and the number of overlapping lines.

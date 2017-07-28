@@ -1,0 +1,3 @@
+/home/jasminedhillon/Workspace/InformationViz/Slice/CMakeFiles/edit_cache.dir
+/home/jasminedhillon/Workspace/InformationViz/Slice/CMakeFiles/Slice.dir
+/home/jasminedhillon/Workspace/InformationViz/Slice/CMakeFiles/rebuild_cache.dir

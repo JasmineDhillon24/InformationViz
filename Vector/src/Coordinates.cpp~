@@ -1,0 +1,10 @@
+#include "Coordinates.h"
+
+Coordinates::Coordinates(int x_min, int x_max, int y_min, int y_max){
+
+  this->x_min=x_min;
+  this->x_max=x_max;
+  this->y_min=y_min;
+  this->y_max=y_max;
+  
+}

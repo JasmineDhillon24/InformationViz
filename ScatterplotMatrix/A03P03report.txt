@@ -1,0 +1,19 @@
+Assignment 03 Part 03
+In this part I cahnged the color of non selected points to maroon to help them distinguish from selected points.
+The selected points remain blue. The color changes on mouse pressed.
+
+Iris- With sepal width v/s petal width and sepal width and petal length, are mostly cluster based near axis.
+ We see that pertal length and petal width follow a linear trend. 
+
+There are 2 sub groups and brushing highlights them
+
+Abalone
+Most data is grouped here, which is interrelated.
+	
+Wine Quality
+This dataset is very difficult to visualize and very slow.
+
+ Auto-MPG
+Here we have a linear trend between displacement, weight and horsepower.
+Model year and origin has few possible values and they keep repeating for all pairs.
+Most data here repeats and gives an impression of a looping values over time.

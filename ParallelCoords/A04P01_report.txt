@@ -1,0 +1,70 @@
+A04P01 report
+
+Handling the data files:-
+
+I have modified the three given datasets to exclude any empty spaces,i.e., two tabs occuring together. The modified
+data files are present in A04P01/bin/data and A04P02/bin/data. My parser handles different data types by converting 
+them all into float. The integer values are read as float by adding a decimal point and zero thereafter and the 
+string values are ignored as I founf that the string values are not be useful to visualize the data, also removing 
+the string column gives extra space to draw the remaining data in the dataset. I use the resultant float values to 
+find minimum and maximum of each column in the dataset.
+
+Initial concept:-
+
+Axis:-
+
+The parallel coordinates visualization will have axis lines representing each column(other than the first string column)
+in each dataset.For each point in the column ther will be a line draw from that point to a corresponding point in the 
+next column. The first and the last axes will only have lines either going in or coming out of it, all the other axes 
+will have lines coming in and going out. 
+
+Ticks, labels:-
+
+For each column represented by an axis, ther will be a minimum value of the column at the bottom of the axis and a maximum 
+value displayed at the top of the axis. There will be 3 tick values equally distributed through the axis giving values of 
+each column at 3 equal intervals rounded to 5 digits. All attribute's label values will be displayed the top of the axis 
+and the maximum value. 
+
+Color:-
+
+I decided to implement a continuous color map by keeping two of the values for RGB constant and by implementing a transition 
+of the third color value for first and last values of the first attribute. This was particularly done to gove the viewer an easy
+visualization by differnetiating between values occuring first and last based on color, but also not overpowering the entire 
+visualization with too many colors. For this reason The color encoding for the entire visualization will be between these 
+colors generated. 
+
+Differentiating overlapping lines:-
+
+To differentiate between multiple overlappig lines, I intend to do hierarchical grouping and reduce the number of lines drawn.
+Also the clusting will be color encoded.
+
+Deviations from initial concept:-
+
+1) Since 3 tick values were largely spaced out, I decided to add another tick value.
+2) The final color encoding was a continous color map by varying the amount of blue in a color to form light blue and light green.
+3) The distinct visualization of overlapping lines was a most difficult task than I anticipated.
+4) The datasets can be loaded the button toggle. Clicking on the small rectangular button corresponding to each dataset name selects 
+the dataset file. The dataset name with a green button is the one currently in use. By default, the three datasets provided are 
+cars.tvs, cameras.tsv and nutrients.tsv.
+
+
+Interactions:-
+
+-Inverting the axes- The interaction has been implemented to enable the user to click on the MAX/MIN value below the column name 
+label to invert the axis. Once the axis is inverted, the min-max labels, ticks and lines passing through that axis invert accordingly.
+Reclicking on the same label irrespective of whether it represents MIN/MAX value will reinvert the axis. The inversion will not
+occur on clicking the lower min-max value label, since it can be inconvinient to go all the way below the axes and click for inversion.
+
+-Reordering the axes- The interaction has been implemented to enable the user to double click on an column name label, drag and drop it
+to another column name label, to reorder axes. After dropping the label, the axes will reorder accordingly. DRag and drop was chosen as 
+it is most intuative interaction mechanism to reorder objects. If the adjacent axes are reordered both the axes will simply swap, 
+else the dragged label will take the place of the dropped label and all labels will move one place. Similar change is reflected in the lines.
+
+-Brushing through the axes- To brush through the dataset, the user should click on any axes and drag. A transparent rectangle showing the
+area of values emcompassed inside the rectangle will appear. The user can drag and drop to include the desired values to be brushed of any
+axes. This can be extended to multiple axes. The user can select values by drag and drop of a rectangle on any other axes while he has brushing
+applied on an axes. This mechanism was chosen as to select multiple values we usually apply drag and drop and the formation of rectangle will
+make it easier for the user to decide the data range to  be brushed. The lines drawn will be corresponding to the values brushed through all axes. 
+Clicking on the column name label once will unselect the brushed region on that axes.
+
+

@@ -1,0 +1,72 @@
+#pragma once
+
+#include "ofMain.h"
+#include "ofxGui.h"
+#include "Coordinates.h"
+#include "VectorField.h"
+
+using namespace std;
+
+
+
+class ofApp : public ofBaseApp {
+  public:
+  
+  static const int CLICK=0;
+  static const int DRAG=1;
+  static const int NONE=-1;
+
+  static const int COLOR=0;
+
+  void setup();
+  void update();
+  void draw();
+  void exit();
+
+
+
+  void keyPressed(int key);
+  void keyReleased(int key);
+  void mouseMoved(int x, int y );
+  void mouseDragged(int x, int y, int button);
+  void mousePressed(int x, int y, int button);
+  void mouseReleased(int x, int y, int button);
+  void mouseEntered(int x, int y);
+  void mouseExited(int x, int y);
+  void windowResized(int w, int h);
+  void dragEvent(ofDragInfo dragInfo);
+  void gotMessage(ofMessage msg);
+    
+  VectorField* vf;
+  ofFloatImage image;
+  
+  int image_width;
+  int image_height, image_max_width, image_max_height;
+      
+  ofTrueTypeFont  verdana;                                                     
+                                                                               
+
+  int font_size=13;
+
+  int mouse_mode=NONE;
+ 
+    
+  ofTrueTypeFont  verdana1;                                                     
+                                                                               
+
+  int font_size1=10;
+
+   
+  int tick_x_count=6;
+ 
+    
+  int legend_height=20;
+  int legend_width=400;
+
+
+  int legend_x;
+  int legend_y;
+  ofFloatImage legend;
+  float* legend_data;
+
+};

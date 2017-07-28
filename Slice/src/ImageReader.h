@@ -1,0 +1,30 @@
+#pragma once
+
+#include <string>
+#include <vtkSmartPointer.h>                                                                                                       
+#include <vtkImageData.h>                                                                                                          
+#include <vtkXMLImageDataReader.h>                                                                                                 
+#include <vtkPointData.h>                                                                                                          
+#include <vtkDataArray.h>
+#include "ofMain.h"
+
+using namespace std;
+
+
+class ImageReader
+{
+ public:
+ int dims[3];
+ float* data;
+   double range[2];
+  void read_data(string file);
+  inline float* get_data(){
+    return data;
+  }
+  inline int* get_dims(){
+    return dims;
+  }
+  inline double* get_range(){
+    return range;
+  }
+};

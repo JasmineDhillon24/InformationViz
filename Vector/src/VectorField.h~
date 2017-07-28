@@ -1,0 +1,66 @@
+#pragma once
+
+#include <string>
+#include <vtkSmartPointer.h>                                                                                                       
+#include <vtkImageData.h>                                                                                                          
+#include <vtkXMLImageDataReader.h>                                                                                                 
+#include <vtkPointData.h>                                                                                                          
+#include <vtkDataArray.h>                                                                                                        
+#include <vector>
+#include "ofMain.h"
+#include "Coordinates.h"
+
+using namespace std;
+
+
+
+class VectorField
+{
+ public:
+
+
+  Coordinates* c_world;
+  Coordinates* c_data;
+  Coordinates* c_screen;
+  
+  double mag[2];
+  double origin[3];
+  double spacing[3];
+
+  int dims[3];
+  ofVec2f* data;
+  int max_height, max_width;
+  int width, height;
+  void measure();
+  void read_data(string file);
+  ofVec2f interploate(ofVec2f s_point);
+
+  float *img_data;
+  vtkSmartPointer<vtkImageData> image;
+  inline  vtkSmartPointer<vtkImageData> get_image_data(){
+    return image;
+  }
+
+  inline float* get_data(){
+    return img_data;
+  }
+  inline int* get_dims(){
+    return dims;
+  }
+
+   inline void set_max_height(int h){
+     max_height=h;
+  }
+   inline void set_max_width(int w){
+     max_width=w;
+  }
+    inline int get_width()
+  {
+    return width;
+  }
+  inline int get_height(){
+    return height;
+  }
+ 
+ 
+};

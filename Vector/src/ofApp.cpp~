@@ -1,0 +1,155 @@
+
+
+#include "ofApp.h"
+
+
+
+
+
+//--------------------------------------------------------------
+void ofApp::setup(){
+
+ofBackground(255,255,255);                                                    
+  ofTrueTypeFont::setGlobalDpi(72);                                             
+  verdana.load("verdana.ttf", font_size, true, true);                           
+  verdana.setLineHeight(38.0f);                                                 
+  verdana.setLetterSpacing(1.037);                                              
+
+  verdana1.load("verdana.ttf", font_size1, true, true);                           
+  verdana1.setLineHeight(38.0f);                                                 
+  verdana1.setLetterSpacing(1.037);                                              
+
+  
+  vf = new VectorField();
+  image_max_width= 0.8f*ofGetScreenWidth();
+  image_max_height= 0.8f*ofGetScreenHeight();
+
+  vf->set_max_height(image_max_height);
+  vf->set_max_width(image_max_width);
+  vf->read_data(ofToDataPath("3cylflow.vti").c_str());
+  image_width=vf->get_width();
+  image_height=vf->get_height();
+  image.setFromPixels(vf->get_data(), image_width-1, image_height, OF_IMAGE_GRAYSCALE);
+
+  //  color_data=new float[color_height*color_width*3];
+
+  
+  // startedVTK = false;
+
+  /* ofFloatColor start;
+  ofFloatColor end;
+  ofFloatColor middle;
+ 
+
+  start.set(0.56,0.40,0.07);
+  end.set(0.13, 0.58,0.58);
+  middle.set(0.96,0.96,0.96);
+  pair<int, ofFloatColor> start_pt, end_pt, middle_pt;
+  start_pt.second=start;
+  end_pt.second=end;
+  middle_pt.second=middle;
+  */ 
+ }
+
+
+
+//--------------------------------------------------------------
+void ofApp::update(){
+}
+
+
+
+
+
+
+//--------------------------------------------------------------
+void ofApp::draw() {
+
+  image.draw(50,50);
+  
+  
+}
+
+void ofApp::exit() {
+}
+
+
+
+
+
+
+//--------------------------------------------------------------
+void ofApp::keyPressed(int key){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::keyReleased(int key){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseMoved(int x, int y ){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseDragged(int x, int y, int button){
+
+  if(mouse_mode==CLICK){
+
+    mouse_mode=DRAG;
+  }
+
+  if(mouse_mode==DRAG){
+
+  }
+}
+
+//--------------------------------------------------------------
+void ofApp::mousePressed(int x, int y, int button){
+
+
+  
+
+
+
+
+  
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseReleased(int x, int y, int button){
+
+  if(mouse_mode==CLICK || mouse_mode==DRAG){
+
+
+  
+  
+  }
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseEntered(int x, int y){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseExited(int x, int y){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::windowResized(int w, int h){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::gotMessage(ofMessage msg){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::dragEvent(ofDragInfo dragInfo){ 
+
+}

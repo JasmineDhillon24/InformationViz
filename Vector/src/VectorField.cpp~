@@ -1,0 +1,122 @@
+#include "VectorField.h"
+
+
+void VectorField::measure(){
+  float frac_x= max_width/width;
+  float frac_y= max_height/height;
+
+  float frac= (frac_x*height> max_height) ? frac_y : frac_x;
+
+  width=floor(width*frac);
+  height= floor(height*frac);
+  
+}
+
+void VectorField::read_data(string file){
+  //Use VTK to read the .vti file                                                                                                  
+  vtkSmartPointer<vtkXMLImageDataReader> reader = vtkSmartPointer<vtkXMLImageDataReader>::New();
+    reader->SetFileName(ofToDataPath(file).c_str());
+  //Once Update() is called, the reader actually reads the file                                                                    
+  reader->Update();
+
+  image= reader->GetOutput();
+
+  //Get the dimensions.  Even for two-dimensional images, we need to get                                                           
+  //a three-dimensional set of dimensions.  dims[2] should be 1                                                                    
+ 
+  image->GetDimensions(dims);
+  std::cout << "Image dimensions: " << dims[0] << "x" << dims[1] << "x" << dims[2] << std::endl;
+
+  image->GetOrigin(origin);
+  image->GetSpacing(spacing);
+  data= new ofVec2f[dims[0]*dims[1]];
+  //Allocate an arrow to read the data into                                                                                        
+  // data = new float[dims[0]*dims[1]*dims[2]];
+
+  c_data=new Coordinates(0,(double)dims[0]-1, 0, (double)dims[1]-1);
+  c_world= new Coordinates((double)origin[0],(double)(origin[0]+spacing[0]*(c_data->x_max)),(double)origin[1],(double)(origin[1]+spacing[1]*(c_data->y_max)) );
+  width=dims[0];
+  height=dims[1];
+  measure();
+  c_screen=new Coordinates(0,(double)width, 0,(double)height);
+ 
+  //Grab the .vti's data array as a vtkDoubleArray                                                                                 
+  vtkSmartPointer<vtkDataArray> vectors = image->GetPointData()->GetVectors();
+  //Get the scalar range (min/max) value                                                                                           
+  
+  vectors->GetRange(mag,-1);
+  double* vec =new double [vectors->GetNumberOfComponents()];
+  for(int i=0; i<dims[0]*dims[1];i++){
+    vectors->GetTuple(i, vec);
+    data[i].x = vec[0];
+    data[i].y = vec[1];
+  }
+  delete[] vec;
+  
+  // std::cout << "Scalar value range: [" << range[0] << "," << range[1] << "]" << std::endl;
+  img_data = new float[width*height];
+  for(int y=0; y<height;y++){
+    for(int x=0; x<width; x++){
+      ofVec2f s_point;
+      s_point.x=x;
+      s_point.y=height-y-1;
+      ofVec2f velocity;
+      velocity = interpolate(s_point);
+      int p = y*width+x;
+      cout << "pixel: " << p << endl;
+      img_data[p]= (velocity.length()-mag[0]) / (double)(mag[1]-mag[0]);
+    }
+  }
+  
+}
+ofVec2f VectorField::interpolate(ofVec2f s_point){
+
+
+  
+  ofVec2f w_point;
+  w_point.x= ofMap(s_point.x, c_screen->x_min, c_screen->x_max, c_world->x_min, c_world->x_max);
+  w_point.y = ofMap(s_point.y, c_screen->y_min, c_screen->y_max, c_world->y_min, c_world->y_max );
+      
+  double x1= ((int) floor(w_point.x/spacing[0]))*spacing[0];
+  double y1= ((int) floor(w_point.y/spacing[1]))*spacing[1];
+  double x2= (((int) floor(w_point.x/spacing[0])) +1)*spacing[0];
+  double y2= (((int) floor(w_point.y/spacing[1])) +1)*spacing[1];
+
+  //cout << "q_points:" << x1 << "," << y1 << "  " << x2 << "," << y2 << endl;
+
+  ofVec2f velocity ;
+  if(x2<=c_world->x_max && y2<= c_world->y_max){
+
+    ofVec2f p11_d, p12_d, p21_d, p22_d;
+    p11_d.x= ofMap(x1, c_world->x_min, c_world->x_max, c_data->x_min, c_data->x_max);
+    p11_d.y= ofMap(y1, c_world->y_min, c_world->y_max, c_data->y_min, c_data->y_max);
+
+    p12_d.x= ofMap(x1, c_world->x_min, c_world->x_max, c_data->x_min, c_data->x_max);
+    p12_d.y= ofMap(y2, c_world->y_min, c_world->y_max, c_data->y_min, c_data->y_max);
+
+    p21_d.x= ofMap(x2, c_world->x_min, c_world->x_max, c_data->x_min, c_data->x_max);
+    p21_d.y= ofMap(y1, c_world->y_min, c_world->y_max, c_data->y_min, c_data->y_max);
+
+    p22_d.x= ofMap(x2, c_world->x_min, c_world->x_max, c_data->x_min, c_data->x_max);
+    p22_d.y= ofMap(y2, c_world->y_min, c_world->y_max, c_data->y_min, c_data->y_max);
+
+    ofVec2f p11, p12, p21, p22;
+    p11= data[(int)(p11_d.y*c_data->x_max + p11_d.x)];
+    p12= data[(int)(p12_d.y*c_data->x_max + p12_d.x)];
+    p21= data[(int)(p21_d.y*c_data->x_max + p21_d.x)];
+    p22= data[(int)(p22_d.y*c_data->x_max + p22_d.x)];
+
+    ofVec2f r1, r2;
+    r1= ((y2-w_point.y)/(y2-y1))*p11 + ((w_point.y- y1)/(y2-y1))* p12;
+    r2 = ((y2-w_point.y)/(y2-y1))*p21 + ((w_point.y- y1)/(y2-y1))* p22;
+
+    velocity = ((x2-w_point.x)/(x2-x1))*r1 + ((w_point.x-x1)/(x2-x1))*r2;
+    
+  }
+  else {
+    velocity.x=0;
+    velocity.y=0;
+    
+  }
+  return velocity;
+}
